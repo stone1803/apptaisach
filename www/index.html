@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"
+    />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *"
+    />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./css/bulma.css" />
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyANU92M9hFovL1InevE0S5xazPAaoYZJ4E",
+        authDomain: "chiasekhoahoc.firebaseapp.com",
+        databaseURL: "https://chiasekhoahoc.firebaseio.com",
+        projectId: "chiasekhoahoc",
+        storageBucket: "chiasekhoahoc.appspot.com",
+        messagingSenderId: "71566019198",
+        appId: "1:71566019198:web:80021cafcd68f12c86e62f",
+        measurementId: "G-XPH1NZ002W"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      var databaseRef = firebase.database().ref("khoahoc/");
+      var storage = firebase.storage();
+      var storageRef = storage.ref();
+      databaseRef.once("value", function(snapshot) {
+        let content = "";
+        snapshot.forEach(function(childSnapshot) {
+          content += `
+          <article class="message is-warning">
+        <div class="message-header">
+          <p>${childSnapshot.val().khoahoc}</p>
+          <a href="${
+            childSnapshot.val().link
+          }"> <button class="button is-black" aria-label="save">
+            TẢI SÁCH
+          </button></a>
+        </div>
+        <div class="message-body">
+                ${childSnapshot.val().noidung}
+        </div>
+      </article>
+  
+      `;
+        });
+
+        document.getElementById("tblDanhSachSanPham").innerHTML = content;
+      });
+    </script>
+
+    <title>SÁCH HUYỀN HỌC - PHUCMAP.COM</title>
+  </head>
+
+  <body>
+    <nav class="navbar is-fixed-bottom">
+      <div class="navbar-brand has-navbar-fixed-bottom">
+        <a class="navbar-item" href="https://phucmap.com">
+          
+          <i class="fas fa-book-open"></i>
+
+
+        </a>
+        <a class="navbar-item">
+          LIÊN HỆ
+        </a>
+      </div>
+    </nav>
+    <section class="card mt-4" id="tblDanhSachSanPham">
+      <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <!-- Any other Bulma elements you want -->
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+    </section>
+    <script></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+      app.initialize();
+    </script>
+  </body>
+</html>
